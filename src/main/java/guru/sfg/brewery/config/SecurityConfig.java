@@ -3,6 +3,7 @@ package guru.sfg.brewery.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,20 +34,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("guru")
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("spring")
+                .password("{noop}guru") //{without password encoder{noop} exception: There is no PasswordEncoder mapped for the id "null"
                 .roles("ADMIN")
-                .build();
-
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, user);
+                .and()
+                .withUser("user")
+                .password("{noop}password")
+                .roles("USER");
     }
+
+    //    @Override
+//    @Bean
+//    protected UserDetailsService userDetailsService() {
+//        UserDetails admin = User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("guru")
+//                .roles("ADMIN")
+//                .build();
+//
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("password")
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(admin, user);
+//    }
 }
