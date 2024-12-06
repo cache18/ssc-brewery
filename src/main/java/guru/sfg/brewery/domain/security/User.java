@@ -28,11 +28,6 @@ public class User {
         inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
     private Set<Role> roles;
 
-//    @Singular
-//    @ManyToMany(cascade = CascadeType.MERGE)
-//    @JoinTable(name = "user_authority",
-//        joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
-//        inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
     @Transient
     private Set<Authority> authorities;
 
